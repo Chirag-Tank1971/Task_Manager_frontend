@@ -2,6 +2,8 @@
 
 React single-page application for the Task Management System. Connects to the [Backend API](../Backend/README.md) for authentication and task CRUD.
 
+**Live app:** [https://task-manager-frontend-sigma-ochre.vercel.app/login](https://task-manager-frontend-sigma-ochre.vercel.app/login)
+
 ---
 
 ## Features
