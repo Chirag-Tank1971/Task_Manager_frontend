@@ -93,7 +93,13 @@ npm install
 cp .env.example .env
 ```
 
-Default `.env`:
+Default `.env` (hosted API on Render):
+
+```env
+VITE_API_BASE_URL=https://task-manager-backend-ebf0.onrender.com/api/v1
+```
+
+For local backend development:
 
 ```env
 VITE_API_BASE_URL=http://localhost:5000/api/v1
@@ -127,10 +133,10 @@ Or register a new user from the **Register** page.
 |----------|----------|-------------|
 | `VITE_API_BASE_URL` | Yes | Backend API base URL including `/api/v1` |
 
-Example for production:
+Production (Render):
 
 ```env
-VITE_API_BASE_URL=https://your-api.onrender.com/api/v1
+VITE_API_BASE_URL=https://task-manager-backend-ebf0.onrender.com/api/v1
 ```
 
 Variables must be prefixed with `VITE_` to be exposed to the client.
