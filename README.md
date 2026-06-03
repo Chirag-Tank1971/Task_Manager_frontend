@@ -223,7 +223,15 @@ Output is in `dist/`. Deploy to Vercel, Netlify, or any static host.
 
 Set `VITE_API_BASE_URL` to your deployed API URL at build time.
 
-Ensure the backend **CORS** config allows your frontend origin (currently `http://localhost:5173`).
+Ensure the backend **CORS** config allows your frontend origin. Deployed backends allow all `*.vercel.app` URLs automatically.
+
+On **Vercel**, set environment variable before build:
+
+```env
+VITE_API_BASE_URL=https://task-manager-backend-ebf0.onrender.com/api/v1
+```
+
+Then redeploy the frontend so the URL is baked into the build.
 
 ---
 

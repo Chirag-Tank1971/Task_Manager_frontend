@@ -7,9 +7,11 @@ import StatCard from '../components/StatCard';
 import DashboardSkeleton from '../components/DashboardSkeleton';
 import api, { getErrorMessage } from '../services/api';
 import { useAuth } from '../context/AuthContext';
+import { useConfirm } from '../hooks/useConfirm';
 
 export default function DashboardPage() {
   const { user } = useAuth();
+  const { ask, ConfirmDialog } = useConfirm();
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editingTask, setEditingTask] = useState(null);
@@ -57,7 +59,13 @@ export default function DashboardPage() {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Delete this task?')) return;
+    const confirmed = await ask({
+      title: 'Delete this task?',
+      message: 'This action cannot be undone. The task will be permanently removed.',
+      confirmText: 'Delete task',
+    });
+    if (!confirmed) return;
+
     try {
       await api.delete(`/tasks/${id}`);
       toast.success('Task deleted');
@@ -83,7 +91,9 @@ export default function DashboardPage() {
   const firstName = user?.name?.split(' ')[0] || 'there';
 
   return (
-    <div className="page-shell dashboard-mesh relative overflow-hidden">
+    <>
+      <ConfirmDialog />
+      <div className="page-shell dashboard-mesh relative overflow-hidden">
       <div className="pointer-events-none absolute -left-32 top-20 h-64 w-64 rounded-full bg-accent-200/30 blur-3xl animate-pulse-soft" />
       <div
         className="pointer-events-none absolute -right-24 top-40 h-72 w-72 rounded-full bg-violet-200/25 blur-3xl animate-pulse-soft"
@@ -222,5 +232,6 @@ export default function DashboardPage() {
         </div>
       </main>
     </div>
+    </>
   );
 }

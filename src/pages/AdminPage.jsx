@@ -4,8 +4,10 @@ import Navbar from '../components/Navbar';
 import StatCard from '../components/StatCard';
 import LoadingSpinner from '../components/LoadingSpinner';
 import api, { getErrorMessage } from '../services/api';
+import { useConfirm } from '../hooks/useConfirm';
 
 export default function AdminPage() {
+  const { ask, ConfirmDialog } = useConfirm();
   const [users, setUsers] = useState([]);
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -31,7 +33,13 @@ export default function AdminPage() {
   }, []);
 
   const handleDeleteUser = async (id) => {
-    if (!window.confirm('Delete this user and all their tasks?')) return;
+    const confirmed = await ask({
+      title: 'Delete this user?',
+      message: 'The user and all of their tasks will be permanently deleted. This cannot be undone.',
+      confirmText: 'Delete user',
+    });
+    if (!confirmed) return;
+
     try {
       await api.delete(`/admin/users/${id}`);
       toast.success('User deleted');
@@ -51,7 +59,9 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="page-shell">
+    <>
+      <ConfirmDialog />
+      <div className="page-shell">
       <Navbar />
       <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
         <div className="mb-8">
@@ -148,5 +158,6 @@ export default function AdminPage() {
         </section>
       </main>
     </div>
+    </>
   );
 }
